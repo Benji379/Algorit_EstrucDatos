@@ -1,4 +1,4 @@
-package bubblesort;
+package metodosOrdenamiento;
 
 import java.util.Scanner;
 
@@ -30,6 +30,9 @@ public class Main {
                 break;
             case 3:
                 InsertSort.main(new String[]{});
+                break;
+            case 4:
+                MergeSort.main(new String[]{});
                 break;
             default:
                 System.out.println("OPCIONES NO VALIDA");

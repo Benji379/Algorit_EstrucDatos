@@ -1,4 +1,4 @@
-package bubblesort;
+package metodosOrdenamiento;
 
 import ConexionBd.ConexionSQL;
 import java.awt.HeadlessException;

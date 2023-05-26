@@ -1,4 +1,4 @@
-package bubblesort;
+package metodosOrdenamiento;
 
 import java.util.Scanner;
 
@@ -9,7 +9,6 @@ import java.util.Scanner;
 public class BubbleSort extends metodosDAO {
 
     public static void main(String[] args) {
-        //PROBANDO
         Scanner scanner = new Scanner(System.in);
         BubbleSort p = new BubbleSort();
         System.out.println(" [1] Ingresar datos");
