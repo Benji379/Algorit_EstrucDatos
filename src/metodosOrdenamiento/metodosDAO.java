@@ -25,6 +25,9 @@ public class metodosDAO {
         Statement st;
         ResultSet rs;
         String punto = puntos;
+
+
+        
         try {
             String sql = "Update productos set id='" + idc + "', puntos='" + punto + "' where id=" + idc;
             conet = con1.conexion();
