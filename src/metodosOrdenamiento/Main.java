@@ -6,7 +6,7 @@ import java.util.Scanner;
  *
  * @author Benji
  */
-public class Main extends metodosDAO{
+public class Main{
     
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
