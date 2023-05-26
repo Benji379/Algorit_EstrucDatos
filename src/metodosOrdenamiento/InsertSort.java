@@ -54,9 +54,7 @@ public class InsertSort extends metodosDAO {
     }
 
     public static void main(String[] args) {
-
         Scanner teclado = new Scanner(System.in);
-
         System.out.println("\n       VENTAS\n");
         System.out.println(" [1] Cantidad de puntos por cliente");
         System.out.println(" [2] Nueva venta");
@@ -64,7 +62,7 @@ public class InsertSort extends metodosDAO {
 
         if (op == 1) {
             System.out.println(" \n CANTIDAD DE PUNTOS POR CLIENTE\n");
-
+            
             String[] arr = getConsultar("clientes", "puntos");
             String[] id = getConsultar("clientes", "id");
             int puntos[] = new int[arr.length];
@@ -75,7 +73,7 @@ public class InsertSort extends metodosDAO {
                 puntos[i] = Integer.parseInt(arr[i]);
                 ID[i] = Integer.parseInt(id[i]);
             }
-
+            
             insertSort(puntos, ID);
             System.out.println("\n      PUNTOS\t    CLIENTE   \n");
             for (int i = 0; i < puntos.length; i++) {
@@ -87,7 +85,7 @@ public class InsertSort extends metodosDAO {
             if (op == 2) {
                 System.out.print(" Nombre del cliente: ");
                 String name = teclado.next();
-                
+
                 boolean salir = false;
                 String productos[] = getConsultar("productos", "nomProducto");
 
@@ -108,7 +106,7 @@ public class InsertSort extends metodosDAO {
                     acum += precio;
                     System.out.println(" ¿Continuar? Si o No");
                     String resp = teclado.next();
-                    
+
                     if (resp.equalsIgnoreCase("no")) {
                         salir = true;
                     }

@@ -18,6 +18,24 @@ public class metodosDAO {
     ConexionSQL cc = new ConexionSQL();
     Connection con = cc.conexion();
 
+    private static void AumentarPuntosCliente(String dniCliente, String puntos) {
+        ConexionSQL con1 = new ConexionSQL();
+        int idc = Integer.parseInt(getID("clientes", dniCliente, "dni", "id"));
+        Connection conet;
+        Statement st;
+        ResultSet rs;
+        String punto = puntos;
+        try {
+            String sql = "Update productos set id='" + idc + "', puntos='" + punto + "' where id=" + idc;
+            conet = con1.conexion();
+            st = conet.createStatement();
+            st.executeUpdate(sql);
+            System.out.println("Puntos del cliente Modificados");
+        } catch (HeadlessException | SQLException e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
+    }
+
     public void AgregarMarca(String marca) {
         String SQL = "insert into marca_de_autos (marca) values(?)";
         try {
@@ -60,7 +78,7 @@ public class metodosDAO {
         }
         return null; // Si ocurre una excepción o no se encuentran datos, retorna null
     }
-    
+
     public static String getID(String nameTablaSQL, String nameProducto, String nameColumnaIngresar, String nameColumnaRetornar) {
         ConexionSQL con1 = new ConexionSQL();
         Connection conet;
