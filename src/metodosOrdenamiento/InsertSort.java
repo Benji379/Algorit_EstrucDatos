@@ -62,7 +62,7 @@ public class InsertSort extends metodosDAO {
 
         if (op == 1) {
             System.out.println(" \n CANTIDAD DE PUNTOS POR CLIENTE\n");
-            
+
             String[] arr = getConsultar("clientes", "puntos");
             String[] id = getConsultar("clientes", "id");
             int puntos[] = new int[arr.length];
@@ -73,7 +73,7 @@ public class InsertSort extends metodosDAO {
                 puntos[i] = Integer.parseInt(arr[i]);
                 ID[i] = Integer.parseInt(id[i]);
             }
-            
+
             insertSort(puntos, ID);
             System.out.println("\n      PUNTOS\t    CLIENTE   \n");
             for (int i = 0; i < puntos.length; i++) {
@@ -83,8 +83,8 @@ public class InsertSort extends metodosDAO {
             }
         } else {
             if (op == 2) {
-                System.out.print(" Nombre del cliente: ");
-                String name = teclado.next();
+                System.out.print(" DNI cliente: ");
+                String DNI = teclado.next();
 
                 boolean salir = false;
                 String productos[] = getConsultar("productos", "nomProducto");
@@ -115,14 +115,19 @@ public class InsertSort extends metodosDAO {
                 System.out.println(" TOTAL A PAGAR: S/." + acum);
                 // CADA S/.20 ACUMULADO SE GANA 1 PUNTO
                 puntos = (int) Math.round(acum / 20);
+                //testear cuantos puntos ganó
+                System.out.println("Puntos " + puntos);
+                //ME RETORNA LOS PUNTOS ACTUALES DEL CLIENTE EN LA BASE DE DATOS
+                int puntosClienteBD = Integer.parseInt(getID("clientes", DNI, "dni", "puntos"));
                 //AGREGO AL CLIENTE Y SUS PUNTOS A LA BD
-                AgregarCliente(name, puntos);
+//                AgregarCliente(DNI, puntos);
+                String newPuntos = String.valueOf(puntosClienteBD + puntos);
+                AumentarPuntosCliente(DNI, newPuntos);
 //                System.out.println("Tiene " + puntos + " puntos");
             } else {
                 System.out.println("OPCION INVALIDA");
             }
         }
-
     }
 
     public static void AgregarCliente(String nameCliente, int puntos) {

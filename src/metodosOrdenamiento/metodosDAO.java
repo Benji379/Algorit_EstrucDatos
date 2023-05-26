@@ -18,7 +18,7 @@ public class metodosDAO {
     ConexionSQL cc = new ConexionSQL();
     Connection con = cc.conexion();
 
-    private static void AumentarPuntosCliente(String dniCliente, String puntos) {
+    public static void AumentarPuntosCliente(String dniCliente, String puntos) {
         ConexionSQL con1 = new ConexionSQL();
         int idc = Integer.parseInt(getID("clientes", dniCliente, "dni", "id"));
         Connection conet;
@@ -26,10 +26,8 @@ public class metodosDAO {
         ResultSet rs;
         String punto = puntos;
 
-
-        
         try {
-            String sql = "Update productos set id='" + idc + "', puntos='" + punto + "' where id=" + idc;
+            String sql = "Update clientes set id='" + idc + "', puntos='" + punto + "' where id=" + idc;
             conet = con1.conexion();
             st = conet.createStatement();
             st.executeUpdate(sql);
