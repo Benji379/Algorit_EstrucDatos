@@ -7,10 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Scanner;
-//===================00
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -139,7 +136,7 @@ public class MergeSort extends metodosDAO {
                         System.out.println("Seleccione el # de fila correspondiente al DNI");
                         System.out.print(" # Fila: ");
                         int nFila = teclado.nextInt();
-                        consultar("clientes", DniBD[nFila - 1]);
+                        consultar("clientes", "dni", DniBD[nFila - 1]);
                         break;
                     case 5://MARCAS
                         System.out.println("\n\tMARCAS\n");
@@ -153,6 +150,14 @@ public class MergeSort extends metodosDAO {
                         int nfila = teclado.nextInt();
                         String marcaElegida = marcas[nfila - 1];
                         System.out.println("\n" + marcaElegida + "\n");
+                        String placas[] = obtenerPlacasPorMarca("clientes", "marca", marcaElegida, "placa");
+                        mergeSort(placas);
+                        for (int i = 0; i < placas.length; i++) {
+                            System.out.println("[" + (i + 1) + "]   " + placas[i]);
+                        }
+                        System.out.println("Ingrese el # de fila correspondiente a la placa");
+                        System.out.print(" # de Fila: ");
+                        int nFilaMarc = teclado.nextInt();
 
                         break;
                     default:
@@ -162,7 +167,7 @@ public class MergeSort extends metodosDAO {
         }
     }
 
-    public static void consultar(String nameTablaSQL, String dniCliente) {
+    public static void consultar(String nameTablaSQL, String nameColumna, String datoComparar) {
 
         ConexionSQL con1 = new ConexionSQL();
         Connection conet;
@@ -170,7 +175,7 @@ public class MergeSort extends metodosDAO {
         ResultSet rs;
 
         String DNI, nombreCliente, apellido, placa, marca, puntos;
-
+        String aux;
         String sql = "select * from " + nameTablaSQL;
         int existe = 0;
 
@@ -179,15 +184,15 @@ public class MergeSort extends metodosDAO {
             st = conet.createStatement();
             rs = st.executeQuery(sql);
             while (rs.next()) {
+                aux = rs.getString(nameColumna)
                 DNI = rs.getString("dni");
                 nombreCliente = rs.getString("nombre");
                 apellido = rs.getString("apellido");
                 marca = rs.getString("marca");
                 placa = rs.getString("placa");
                 puntos = rs.getString("puntos");
-                if (DNI.equals(dniCliente)) {
+                if (aux.equals(datoComparar)) {
                     existe = 1;
-//System.out.print("\t" + DNI + "\t" + nombreCliente + "\t" + apellido + "\t" + puntos + "\t" + placa + "\t" + marca + "\n");
                     System.out.println("::::::::::::::::::::::::::::::::::");
                     System.out.println(" DNI      :" + DNI);
                     System.out.println(" Nombre   :" + nombreCliente);
@@ -204,6 +209,46 @@ public class MergeSort extends metodosDAO {
         } catch (HeadlessException | SQLException e) {
 
         }
+    }
+
+    public static String[] obtenerPlacasPorMarca(String nombreTabla, String nombreColumnaMarcas, String marca,
+            String nombreColumnaPlacas) {
+        List<String> placas = new ArrayList<>();
+        ConexionSQL con1 = new ConexionSQL();
+        Connection conet;
+        Statement st;
+        ResultSet rs;
+        try {
+            // Obtén la conexión existente
+            conet = con1.conexion();
+
+            // Construye la consulta SQL parametrizada
+            String consultaSQL = "SELECT " + nombreColumnaPlacas + " FROM " + nombreTabla
+                    + " WHERE " + nombreColumnaMarcas + " = ?";
+
+            // Crea el objeto PreparedStatement y establece el valor del parámetro de marca
+            PreparedStatement statement = conet.prepareStatement(consultaSQL);
+            statement.setString(1, marca);
+
+            // Ejecuta la consulta
+            ResultSet resultSet = statement.executeQuery();
+
+            // Itera sobre los resultados y agrega las placas al ArrayList
+            while (resultSet.next()) {
+                String placa = resultSet.getString(nombreColumnaPlacas);
+                placas.add(placa);
+            }
+
+            // Cierra los recursos
+            resultSet.close();
+            statement.close();
+            conet.close();
+        } catch (SQLException e) {
+            System.out.println("ERROR de consulta por grupo de marca: " + e.getMessage());
+        }
+
+        // Convierte el ArrayList a un array de String y lo retorna
+        return placas.toArray(new String[0]);
     }
 
     public static void mergeSort(String[] arr) {
@@ -256,43 +301,6 @@ public class MergeSort extends metodosDAO {
             j++;
             k++;
         }
-    }
-
-    public static String[] obtenerPlacasPorMarca(String nombreTabla, String nombreColumnaMarcas, String marca,
-            String nombreColumnaPlacas) {
-        List<String> placas = new ArrayList<>();
-
-        try {
-            // Obtén la conexión existente
-            Connection connection = con1.getConnection(); // Reemplaza "con1.getConnection()" por tu objeto de conexión
-
-            // Construye la consulta SQL parametrizada
-            String consultaSQL = "SELECT " + nombreColumnaPlacas + " FROM " + nombreTabla
-                    + " WHERE " + nombreColumnaMarcas + " = ?";
-
-            // Crea el objeto PreparedStatement y establece el valor del parámetro de marca
-            PreparedStatement statement = connection.prepareStatement(consultaSQL);
-            statement.setString(1, marca);
-
-            // Ejecuta la consulta
-            ResultSet resultSet = statement.executeQuery();
-
-            // Itera sobre los resultados y agrega las placas al ArrayList
-            while (resultSet.next()) {
-                String placa = resultSet.getString(nombreColumnaPlacas);
-                placas.add(placa);
-            }
-
-            // Cierra los recursos
-            resultSet.close();
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        // Convierte el ArrayList a un array de String y lo retorna
-        return placas.toArray(new String[0]);
     }
 
 }
