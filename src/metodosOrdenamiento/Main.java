@@ -6,7 +6,7 @@ import java.util.Scanner;
  *
  * @author Benji
  */
-public class Main {
+public class Main extends metodosDAO{
     
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
@@ -20,7 +20,7 @@ public class Main {
         System.out.println(pts);
         int op = teclado.nextInt();
         System.out.println(pts);
-
+        
         switch (op) {
             case 1:
                 BubbleSort.main(new String[]{});

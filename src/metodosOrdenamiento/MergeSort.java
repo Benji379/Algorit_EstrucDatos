@@ -100,7 +100,21 @@ public class MergeSort extends metodosDAO {
             AgregarCliente(dni, nombre, apellido, placa, marca, "0");
         } else {
             if (op == 2) {
-
+                /*
+                        ATRIBUTOS UNICOS
+                PARA LOS ATRIBUTOS ÚNICOS USARÉ EL "MergeSort"
+                
+                 - DNI
+                 - PLACA
+                        
+                        ATRIBUTOS REPETIDOS
+                PARA LOS ATRIBUTOS REPETIDOS, LA ÚNICA FORMA DE IDENTIFICARLOS 
+                COMO ÚNICOS ES ATRAVÉZ DE "ID EN LA BD", USARÉ EL "InserSort"
+                
+                 - NOMBRE
+                 - APELLIDO
+                 - MARCA
+                 */
                 System.out.println("\n         CLIENTES\n");
                 System.out.println("Ordenas por: ");
                 System.out.println(" [1] Dni");
@@ -108,17 +122,72 @@ public class MergeSort extends metodosDAO {
                 System.out.println(" [3] Apellido");
                 System.out.println(" [4] Placa");
                 System.out.println(" [5] Marca");
-
                 int opc = teclado.nextInt();
+
                 switch (opc) {
-                    case 1:
+                    case 1://DNI
+                        System.out.println("\n\tDNI\n");
+                        String DniBD[] = getConsultar("clientes", "dni");
+                        mergeSort(DniBD);
+                        for (int i = 0; i < DniBD.length; i++) {
+                            System.out.println("[" + (i + 1) + "]   " + DniBD[i]);
+                        }
+                        System.out.println("Seleccione el # de fila correspondiente al DNI");
+                        System.out.print(" # Fila: ");
+                        int nFila = teclado.nextInt();
+                        consultar("clientes", DniBD[nFila - 1]);
+                        break;
+                    case 2:
 
                         break;
                     default:
                         System.out.println("ERROR: Opcion invalida");
                 }
-
             }
+        }
+    }
+
+    public static void consultar(String nameTablaSQL, String dniCliente) {
+
+        ConexionSQL con1 = new ConexionSQL();
+        Connection conet;
+        Statement st;
+        ResultSet rs;
+        
+        String DNI, nombreCliente, apellido, placa, marca, puntos;
+        
+        String sql = "select * from " + nameTablaSQL;
+        int existe = 0;
+
+        try {
+            conet = con1.conexion();
+            st = conet.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                DNI = rs.getString("dni");
+                nombreCliente = rs.getString("nombre");
+                apellido = rs.getString("apellido");
+                marca = rs.getString("marca");
+                placa = rs.getString("placa");
+                puntos = rs.getString("puntos");
+                if (DNI.equals(dniCliente)) {
+                    existe = 1;
+//System.out.print("\t" + DNI + "\t" + nombreCliente + "\t" + apellido + "\t" + puntos + "\t" + placa + "\t" + marca + "\n");
+                    System.out.println("::::::::::::::::::::::::::::::::::");
+                    System.out.println(" DNI      :" + DNI);
+                    System.out.println(" Nombre   :" + nombreCliente);
+                    System.out.println(" Apellido :" + apellido);
+                    System.out.println(" Puntos   :" + puntos);
+                    System.out.println(" Placa    :" + placa);
+                    System.out.println(" Marca    :" + marca);
+                    System.out.println("::::::::::::::::::::::::::::::::::");
+                }
+            }
+            if (existe == 0) {
+                System.out.println("CLIENTE NO EXISTE");
+            }
+        } catch (HeadlessException | SQLException e) {
+
         }
     }
 
@@ -174,10 +243,4 @@ public class MergeSort extends metodosDAO {
         }
     }
 
-    public static void printArray(String[] arr) {
-        for (String element : arr) {
-            System.out.print(element + " ");
-        }
-        System.out.println();
-    }
 }

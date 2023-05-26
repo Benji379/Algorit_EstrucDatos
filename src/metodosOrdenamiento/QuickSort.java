@@ -14,7 +14,7 @@ import java.util.Scanner;
  * @author Benji
  */
 public class QuickSort extends metodosDAO {
-    
+
     public static void consultar(String nameTablaSQL, String nameProducto) {
         ConexionSQL con1 = new ConexionSQL();
         Connection conet;
@@ -25,7 +25,7 @@ public class QuickSort extends metodosDAO {
         String sql = "select * from " + nameTablaSQL;
 
         int existe = 0;
-        
+
         try {
             conet = con1.conexion();
             st = conet.createStatement();
@@ -54,7 +54,7 @@ public class QuickSort extends metodosDAO {
         ConexionSQL cc = new ConexionSQL();
         Connection con = cc.conexion();
         String SQL = "insert into productos (nomProducto,cantidad,costo) values(?,?,?)";
-        
+
         try {
             PreparedStatement pst = con.prepareStatement(SQL);
             pst.setString(1, nombreProducto);
@@ -67,7 +67,7 @@ public class QuickSort extends metodosDAO {
     }
 
     private static void Modificar(String nomProducto, double costo, int stock) {
-        ConexionSQL con1 = new ConexionSQL();   
+        ConexionSQL con1 = new ConexionSQL();
         int idc = Integer.parseInt(getID("productos", nomProducto, "nomProducto", "id"));
         Connection conet;
         Statement st;
@@ -86,9 +86,8 @@ public class QuickSort extends metodosDAO {
             System.out.println("ERROR: " + e.getMessage());
         }
     }
-
+    
     public static void main(String[] args) {
-
         Scanner teclado = new Scanner(System.in);
         System.out.println("\n          ALMACEN\n");
         System.out.println(" [1] Menú de los productos");
@@ -132,7 +131,6 @@ public class QuickSort extends metodosDAO {
                 quickSort(arr, 0, arr.length - 1);
                 for (String element : arr) {
                     consultar("productos", element);
-
                 }
             } else {
                 System.out.println("OPCIONES INVALIDA");
