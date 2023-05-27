@@ -36,39 +36,6 @@ public class MergeSort extends metodosDAO {
         }
     }
 
-    public static String[] getConsultar(String nameTabla, String nameColumna) {
-
-        ConexionSQL con1 = new ConexionSQL();
-        Connection conet;
-
-        Statement st;
-        ResultSet rs;
-
-        String sql = "select * from " + nameTabla;
-
-        try {
-            conet = con1.conexion();
-            st = conet.createStatement();
-            rs = st.executeQuery(sql);
-            ArrayList<String> autos = new ArrayList<>();
-
-            while (rs.next()) {
-                String marca = rs.getString(nameColumna);
-                autos.add(marca);
-            }
-            // Convertir el ArrayList en un array de tipo String
-            String[] autosArray = new String[autos.size()];
-            for (int i = 0; i < autos.size(); i++) {
-                autosArray[i] = autos.get(i);
-            }
-            return autosArray;
-
-        } catch (SQLException e) {
-            // Manejo de excepciones
-        }
-        return null; // Si ocurre una excepción o no se encuentran datos, retorna null
-    }
-
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
         System.out.println("\n        CLIENTE\n");
@@ -119,10 +86,9 @@ public class MergeSort extends metodosDAO {
                 System.out.println("\n         CLIENTES\n");
                 System.out.println("Ordenas por: ");
                 System.out.println(" [1] Dni");
-                System.out.println(" [2] Nombre");
-                System.out.println(" [3] Apellido");
-                System.out.println(" [4] Placa");
-                System.out.println(" [5] Marca");
+                System.out.println(" [2] Nombres y Apellidos");
+                System.out.println(" [3] Placa");
+                System.out.println(" [4] Marca");
                 int opc = teclado.nextInt();
 
                 switch (opc) {
@@ -136,9 +102,31 @@ public class MergeSort extends metodosDAO {
                         System.out.println("Seleccione el # de fila correspondiente al DNI");
                         System.out.print(" # Fila: ");
                         int nFila = teclado.nextInt();
-                        consultar("clientes", "dni", DniBD[nFila - 1]);
+                        mostrarDatos("clientes", "dni", DniBD[nFila - 1]);
                         break;
-                    case 5://MARCAS
+                    case 2: //NOMBRES Y APELLIDOS
+                        System.out.println("\n\tNOMBRES Y APELLIDOS\n");
+                        String nameCompleto[] = getConsultar("clientes", "nombre", "apellido");
+                        mergeSort(nameCompleto);
+                        for (int i = 0; i < nameCompleto.length; i++) {
+                            System.out.println("[" + (i + 1) + "]   " + nameCompleto[i]);
+                        }
+                        System.out.println("Seleccione el # de fila correspondiente al NOMBRE COMPLETO");
+                        System.out.print(" # Fila: ");
+                        int nFilas = teclado.nextInt();
+                        String nombreApellido = nameCompleto[nFilas - 1];
+                        String NOMBRE = getSepararNombre(nombreApellido);
+                        String APELLIDO = getSepararApellido(nombreApellido);
+                        mostrarDatos("clientes", "nombre", "apellido", NOMBRE, APELLIDO);
+                        break;
+
+                    case 3://PLACAS
+                        System.out.println("\n\tPLACAS\n");
+                        String listPlacas[] = getConsultar("clientes", "placa");
+                        mergeSort(listPlacas);
+                        ElegirPlacaMostrarUsuario(listPlacas);
+                        break;
+                    case 4://MARCAS
                         System.out.println("\n\tMARCAS\n");
                         String marcas[] = getConsultar("marca_de_autos", "marca");
                         mergeSort(marcas);
@@ -152,13 +140,7 @@ public class MergeSort extends metodosDAO {
                         System.out.println("\n" + marcaElegida + "\n");
                         String placas[] = obtenerPlacasPorMarca("clientes", "marca", marcaElegida, "placa");
                         mergeSort(placas);
-                        for (int i = 0; i < placas.length; i++) {
-                            System.out.println("[" + (i + 1) + "]   " + placas[i]);
-                        }
-                        System.out.println("Ingrese el # de fila correspondiente a la placa");
-                        System.out.print(" # de Fila: ");
-                        int nFilaMarc = teclado.nextInt();
-
+                        ElegirPlacaMostrarUsuario(placas);
                         break;
                     default:
                         System.out.println("ERROR: Opcion invalida");
@@ -167,7 +149,31 @@ public class MergeSort extends metodosDAO {
         }
     }
 
-    public static void consultar(String nameTablaSQL, String nameColumna, String datoComparar) {
+    public static String getSepararNombre(String nombreCompleto) {
+        String[] partes = nombreCompleto.split(" ", 2);
+        String nombre = partes[0];
+        return nombre;
+    }
+
+    public static String getSepararApellido(String nombreCompleto) {
+        String[] partes = nombreCompleto.split(" ", 2);
+        String apellido = partes.length > 1 ? partes[1] : "";
+        return apellido;
+    }
+
+    public static void ElegirPlacaMostrarUsuario(String[] arrayPlacas) {
+        Scanner teclado = new Scanner(System.in);
+        for (int i = 0; i < arrayPlacas.length; i++) {
+            System.out.println("[" + (i + 1) + "]   " + arrayPlacas[i]);
+        }
+        System.out.println("Ingrese el # de fila correspondiente a la placa");
+        System.out.print(" # de Fila: ");
+        int nFilaMarc = teclado.nextInt();
+        String placaElegida = arrayPlacas[nFilaMarc - 1];
+        mostrarDatos("clientes", "placa", placaElegida);
+    }
+
+    public static void mostrarDatos(String nameTablaSQL, String nameColumna, String datoComparar) {
 
         ConexionSQL con1 = new ConexionSQL();
         Connection conet;
@@ -184,7 +190,7 @@ public class MergeSort extends metodosDAO {
             st = conet.createStatement();
             rs = st.executeQuery(sql);
             while (rs.next()) {
-                aux = rs.getString(nameColumna)
+                aux = rs.getString(nameColumna);
                 DNI = rs.getString("dni");
                 nombreCliente = rs.getString("nombre");
                 apellido = rs.getString("apellido");
@@ -226,22 +232,21 @@ public class MergeSort extends metodosDAO {
             String consultaSQL = "SELECT " + nombreColumnaPlacas + " FROM " + nombreTabla
                     + " WHERE " + nombreColumnaMarcas + " = ?";
 
-            // Crea el objeto PreparedStatement y establece el valor del parámetro de marca
-            PreparedStatement statement = conet.prepareStatement(consultaSQL);
-            statement.setString(1, marca);
+            try ( // Crea el objeto PreparedStatement y establece el valor del parámetro de marca
+                    PreparedStatement statement = conet.prepareStatement(consultaSQL)) {
+                statement.setString(1, marca);
 
-            // Ejecuta la consulta
-            ResultSet resultSet = statement.executeQuery();
-
-            // Itera sobre los resultados y agrega las placas al ArrayList
-            while (resultSet.next()) {
-                String placa = resultSet.getString(nombreColumnaPlacas);
-                placas.add(placa);
+                // Itera sobre los resultados y agrega las placas al ArrayList
+                try ( // Ejecuta la consulta
+                        ResultSet resultSet = statement.executeQuery()) {
+                    // Itera sobre los resultados y agrega las placas al ArrayList
+                    while (resultSet.next()) {
+                        String placa = resultSet.getString(nombreColumnaPlacas);
+                        placas.add(placa);
+                    }
+                    // Cierra los recursos
+                }
             }
-
-            // Cierra los recursos
-            resultSet.close();
-            statement.close();
             conet.close();
         } catch (SQLException e) {
             System.out.println("ERROR de consulta por grupo de marca: " + e.getMessage());

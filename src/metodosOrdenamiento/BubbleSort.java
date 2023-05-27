@@ -16,7 +16,7 @@ public class BubbleSort extends metodosDAO {
         int op = scanner.nextInt();
         
         if (op == 1) {
-            System.out.print("Ingrese la cantidad de nombres: ");
+            System.out.print("Ingrese la cantidad de marcas: ");
             int n = scanner.nextInt();
             scanner.nextLine(); // Consumir la nueva línea después de leer el entero
             //      String[] nombres = new String[n];

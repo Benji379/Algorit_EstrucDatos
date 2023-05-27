@@ -23,25 +23,28 @@ public class InsertSort extends metodosDAO {
         ResultSet rs;
         String IDClient;
         String nombreCliente;
+        String apellido;
         String puntos;
 
         String sql = "select * from " + nameTablaSQL;
         int existe = 0;
 
         try {
+            
             conet = con1.conexion();
             st = conet.createStatement();
             rs = st.executeQuery(sql);
             while (rs.next()) {
                 IDClient = rs.getString("id");
                 nombreCliente = rs.getString("nombre");
+                apellido = rs.getString("apellido");
                 puntos = rs.getString("puntos");
                 if (IDClient.equals(idCliente)) {
                     existe = 1;
                     if (IDClient.length() > 8) {
-                        System.out.println("\t" + puntos + "\t    " + nombreCliente);
+                        System.out.println("\t" + puntos + "\t    " + nombreCliente + " " + apellido);
                     } else {
-                        System.out.println("\t" + puntos + "\t    " + nombreCliente);
+                        System.out.println("\t" + puntos + "\t    " + nombreCliente + " " + apellido);
                     }
                 }
             }
@@ -62,7 +65,7 @@ public class InsertSort extends metodosDAO {
 
         if (op == 1) {
             System.out.println(" \n CANTIDAD DE PUNTOS POR CLIENTE\n");
-
+            
             String[] arr = getConsultar("clientes", "puntos");
             String[] id = getConsultar("clientes", "id");
             int puntos[] = new int[arr.length];

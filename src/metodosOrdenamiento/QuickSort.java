@@ -66,7 +66,7 @@ public class QuickSort extends metodosDAO {
         }
     }
 
-    private static void Modificar(String nomProducto, double costo, int stock) {
+    private static void ModificarProducto(String nomProducto, double costo, int stock) {
         ConexionSQL con1 = new ConexionSQL();
         int idc = Integer.parseInt(getID("productos", nomProducto, "nomProducto", "id"));
         Connection conet;
@@ -118,7 +118,7 @@ public class QuickSort extends metodosDAO {
                     int stock = teclado.nextInt();
                     System.out.print(" Precio: ");
                     double precio = teclado.nextDouble();
-                    Modificar(nameProducto, precio, stock);
+                    ModificarProducto(nameProducto, precio, stock);
                 } else {
                     System.out.println("OPCION INVALIDA");
                 }

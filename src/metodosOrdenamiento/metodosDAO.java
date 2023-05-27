@@ -61,18 +61,54 @@ public class metodosDAO {
             conet = con1.conexion();
             st = conet.createStatement();
             rs = st.executeQuery(sql);
-            ArrayList<String> autos = new ArrayList<>();
+            ArrayList<String> añadiendo = new ArrayList<>();
 
             while (rs.next()) {
                 String marca = rs.getString(nameColumna);
-                autos.add(marca);
+                añadiendo.add(marca);
             }
             // Convertir el ArrayList en un array de tipo String
-            String[] autosArray = new String[autos.size()];
-            for (int i = 0; i < autos.size(); i++) {
-                autosArray[i] = autos.get(i);
+            String[] ArrayRetornado = new String[añadiendo.size()];
+            for (int i = 0; i < añadiendo.size(); i++) {
+                ArrayRetornado[i] = añadiendo.get(i);
             }
-            return autosArray;
+            return ArrayRetornado;
+
+        } catch (SQLException e) {
+            // Manejo de excepciones
+        }
+        return null; // Si ocurre una excepción o no se encuentran datos, retorna null
+    }
+
+    public static String[] getConsultar(String nameTabla, String nameColumna, String nameColumna2) {
+
+        ConexionSQL con1 = new ConexionSQL();
+        Connection conet;
+
+        Statement st;
+        ResultSet rs;
+
+        String sql = "select * from " + nameTabla;
+
+        try {
+            conet = con1.conexion();
+            st = conet.createStatement();
+            rs = st.executeQuery(sql);
+            ArrayList<String> añadiendo = new ArrayList<>();
+
+            while (rs.next()) {
+                String datoColumna1 = rs.getString(nameColumna);
+                String datoColumna2 = rs.getString(nameColumna2);
+                String concatenacion = datoColumna1 + " " + datoColumna2;
+                añadiendo.add(concatenacion);
+            }
+
+            // Convertir el ArrayList en un array de tipo String
+            String[] ArrayRetornado = new String[añadiendo.size()];
+            for (int i = 0; i < añadiendo.size(); i++) {
+                ArrayRetornado[i] = añadiendo.get(i);
+            }
+            return ArrayRetornado;
 
         } catch (SQLException e) {
             // Manejo de excepciones
@@ -133,7 +169,93 @@ public class metodosDAO {
             }
         }
     }
-    
-    
-    
+
+    public static void mostrarDatos(String nameTablaSQL, String nameColumna, String datoComparar) {
+
+        ConexionSQL con1 = new ConexionSQL();
+        Connection conet;
+        Statement st;
+        ResultSet rs;
+
+        String DNI, nombreCliente, apellido, placa, marca, puntos;
+        String aux;
+        String sql = "select * from " + nameTablaSQL;
+        int existe = 0;
+
+        try {
+            conet = con1.conexion();
+            st = conet.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                aux = rs.getString(nameColumna);
+                DNI = rs.getString("dni");
+                nombreCliente = rs.getString("nombre");
+                apellido = rs.getString("apellido");
+                marca = rs.getString("marca");
+                placa = rs.getString("placa");
+                puntos = rs.getString("puntos");
+                if (aux.equals(datoComparar)) {
+                    existe = 1;
+                    System.out.println("::::::::::::::::::::::::::::::::::");
+                    System.out.println(" DNI      :" + DNI);
+                    System.out.println(" Nombre   :" + nombreCliente);
+                    System.out.println(" Apellido :" + apellido);
+                    System.out.println(" Puntos   :" + puntos);
+                    System.out.println(" Placa    :" + placa);
+                    System.out.println(" Marca    :" + marca);
+                    System.out.println("::::::::::::::::::::::::::::::::::");
+                }
+            }
+            if (existe == 0) {
+                System.out.println("CLIENTE NO EXISTE");
+            }
+        } catch (HeadlessException | SQLException e) {
+
+        }
+    }
+
+    public static void mostrarDatos(String nameTablaSQL, String nameColumna1, String nameColumna2, String datoComparar1, String datoComparar2) {
+
+        ConexionSQL con1 = new ConexionSQL();
+        Connection conet;
+        Statement st;
+        ResultSet rs;
+
+        String DNI, nombreCliente, apellido, placa, marca, puntos;
+        String aux1, aux2;
+        String sql = "select * from " + nameTablaSQL;
+        int existe = 0;
+
+        try {
+            conet = con1.conexion();
+            st = conet.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                aux1 = rs.getString(nameColumna1);
+                aux2 = rs.getString(nameColumna2);
+                DNI = rs.getString("dni");
+                nombreCliente = rs.getString("nombre");
+                apellido = rs.getString("apellido");
+                marca = rs.getString("marca");
+                placa = rs.getString("placa");
+                puntos = rs.getString("puntos");
+                if ((aux1.equals(datoComparar1)) && (aux2.equals(datoComparar2))) {
+                    existe = 1;
+                    System.out.println("::::::::::::::::::::::::::::::::::");
+                    System.out.println(" DNI      :" + DNI);
+                    System.out.println(" Nombre   :" + nombreCliente);
+                    System.out.println(" Apellido :" + apellido);
+                    System.out.println(" Puntos   :" + puntos);
+                    System.out.println(" Placa    :" + placa);
+                    System.out.println(" Marca    :" + marca);
+                    System.out.println("::::::::::::::::::::::::::::::::::");
+                }
+            }
+            if (existe == 0) {
+                System.out.println("CLIENTE NO EXISTE");
+            }
+        } catch (HeadlessException | SQLException e) {
+
+        }
+    }
 }
