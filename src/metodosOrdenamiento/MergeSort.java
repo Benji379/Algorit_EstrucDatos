@@ -17,25 +17,6 @@ import java.util.List;
  */
 public class MergeSort extends metodosDAO {
 
-    public static void AgregarCliente(String dni, String nameCliente, String apellido, String placa, String marca, String puntos) {
-        ConexionSQL cc = new ConexionSQL();
-        Connection con = cc.conexion();
-        String SQL = "insert into clientes (dni,nombre,apellido,placa,marca,puntos) values(?,?,?,?,?,?)";
-
-        try {
-            PreparedStatement pst = con.prepareStatement(SQL);
-            pst.setString(1, dni);
-            pst.setString(2, nameCliente);
-            pst.setString(3, apellido);
-            pst.setString(4, placa);
-            pst.setString(5, marca);
-            pst.setString(6, puntos);
-            pst.executeUpdate();
-        } catch (HeadlessException | SQLException e) {
-            System.out.println("ERROR: " + e.getMessage());
-        }
-    }
-
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
         System.out.println("\n        CLIENTE\n");
@@ -134,6 +115,25 @@ public class MergeSort extends metodosDAO {
         }
     }
 
+    public static void AgregarCliente(String dni, String nameCliente, String apellido, String placa, String marca, String puntos) {
+        ConexionSQL cc = new ConexionSQL();
+        Connection con = cc.conexion();
+        String SQL = "insert into clientes (dni,nombre,apellido,placa,marca,puntos) values(?,?,?,?,?,?)";
+
+        try {
+            PreparedStatement pst = con.prepareStatement(SQL);
+            pst.setString(1, dni);
+            pst.setString(2, nameCliente);
+            pst.setString(3, apellido);
+            pst.setString(4, placa);
+            pst.setString(5, marca);
+            pst.setString(6, puntos);
+            pst.executeUpdate();
+        } catch (HeadlessException | SQLException e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
+    }
+
     public static String getSepararNombre(String nombreCompleto) {
         String[] partes = nombreCompleto.split(" ", 2);
         String nombre = partes[0];
@@ -202,8 +202,8 @@ public class MergeSort extends metodosDAO {
         }
     }
 
-    public static String[] obtenerPlacasPorMarca(String nombreTabla, String nombreColumnaMarcas, String marca,
-            String nombreColumnaPlacas) {
+    public static String[] obtenerPlacasPorMarca(String nombreTabla,
+            String nombreColumnaMarcas, String marca, String nombreColumnaPlacas) {
         List<String> placas = new ArrayList<>();
         ConexionSQL con1 = new ConexionSQL();
         Connection conet;

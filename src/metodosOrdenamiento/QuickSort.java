@@ -15,6 +15,57 @@ import java.util.Scanner;
  */
 public class QuickSort extends metodosDAO {
 
+    public static void main(String[] args) {
+        Scanner teclado = new Scanner(System.in);
+        System.out.println("\n          ALMACEN\n");
+        System.out.println(" [1] Menú de los productos");
+        System.out.println(" [2] Mostrar productos");
+        int op = teclado.nextInt();
+
+        if (op == 1) {
+            System.out.println("\n     MENÚ DE LOS PRODUCTOS \n");
+            System.out.println(" [1] Ingresar productos ");
+            System.out.println(" [2] Ingreso de stock");
+            int opc = teclado.nextInt();
+
+            if (opc == 1) {
+                System.out.println("\n INGRESAR PRODUCTO\n");
+                System.out.print(" Nombre  : ");
+                String nombreProducto = teclado.next();
+                System.out.print(" Stock   : ");
+                int stock = teclado.nextInt();
+                System.out.print(" Costo   : S/.");
+                double costo = teclado.nextDouble();
+                AgregarProducto(nombreProducto, stock, costo);
+            } else {
+                if (opc == 2) {
+                    System.out.println("\n         MODIFICAR STOCK\n");
+                    System.out.print(" Nombre del Producto: ");
+                    String nameProducto = teclado.next();
+                    System.out.print(" Stock : ");
+                    int stock = teclado.nextInt();
+                    System.out.print(" Precio: ");
+                    double precio = teclado.nextDouble();
+                    ModificarProducto(nameProducto, precio, stock);
+                } else {
+                    System.out.println("OPCION INVALIDA");
+                }
+            }
+        } else {
+            if (op == 2) {
+                String[] arr = getConsultar("productos", "nomProducto");
+                System.out.println("\n          STOCK DE PRODUCTO\n");
+                System.out.println("\n         NOMBRE                 STOCK\n");
+                quickSort(arr, 0, arr.length - 1);
+                for (String element : arr) {
+                    consultar("productos", element);
+                }
+            } else {
+                System.out.println("OPCIONES INVALIDA");
+            }
+        }
+    }
+
     public static void consultar(String nameTablaSQL, String nameProducto) {
         ConexionSQL con1 = new ConexionSQL();
         Connection conet;
@@ -84,57 +135,6 @@ public class QuickSort extends metodosDAO {
             System.out.println("Datos de servicio Modificados");
         } catch (HeadlessException | SQLException e) {
             System.out.println("ERROR: " + e.getMessage());
-        }
-    }
-    
-    public static void main(String[] args) {
-        Scanner teclado = new Scanner(System.in);
-        System.out.println("\n          ALMACEN\n");
-        System.out.println(" [1] Menú de los productos");
-        System.out.println(" [2] Mostrar productos");
-        int op = teclado.nextInt();
-
-        if (op == 1) {
-            System.out.println("\n     MENÚ DE LOS PRODUCTOS \n");
-            System.out.println(" [1] Ingresar productos ");
-            System.out.println(" [2] Ingreso de stock");
-            int opc = teclado.nextInt();
-
-            if (opc == 1) {
-                System.out.println("\n INGRESAR PRODUCTO\n");
-                System.out.print(" Nombre  : ");
-                String nombreProducto = teclado.next();
-                System.out.print(" Stock   : ");
-                int stock = teclado.nextInt();
-                System.out.print(" Costo   : S/.");
-                double costo = teclado.nextDouble();
-                AgregarProducto(nombreProducto, stock, costo);
-            } else {
-                if (opc == 2) {
-                    System.out.println("\n         MODIFICAR STOCK\n");
-                    System.out.print(" Nombre del Producto: ");
-                    String nameProducto = teclado.next();
-                    System.out.print(" Stock : ");
-                    int stock = teclado.nextInt();
-                    System.out.print(" Precio: ");
-                    double precio = teclado.nextDouble();
-                    ModificarProducto(nameProducto, precio, stock);
-                } else {
-                    System.out.println("OPCION INVALIDA");
-                }
-            }
-        } else {
-            if (op == 2) {
-                String[] arr = getConsultar("productos", "nomProducto");
-                System.out.println("\n          STOCK DE PRODUCTO\n");
-                System.out.println("\n         NOMBRE                 STOCK\n");
-                quickSort(arr, 0, arr.length - 1);
-                for (String element : arr) {
-                    consultar("productos", element);
-                }
-            } else {
-                System.out.println("OPCIONES INVALIDA");
-            }
         }
     }
 

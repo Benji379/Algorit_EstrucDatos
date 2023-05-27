@@ -15,47 +15,6 @@ import java.util.Scanner;
  */
 public class InsertSort extends metodosDAO {
 
-    public static void consultar(String nameTablaSQL, String idCliente) {
-
-        ConexionSQL con1 = new ConexionSQL();
-        Connection conet;
-        Statement st;
-        ResultSet rs;
-        String IDClient;
-        String nombreCliente;
-        String apellido;
-        String puntos;
-
-        String sql = "select * from " + nameTablaSQL;
-        int existe = 0;
-
-        try {
-            
-            conet = con1.conexion();
-            st = conet.createStatement();
-            rs = st.executeQuery(sql);
-            while (rs.next()) {
-                IDClient = rs.getString("id");
-                nombreCliente = rs.getString("nombre");
-                apellido = rs.getString("apellido");
-                puntos = rs.getString("puntos");
-                if (IDClient.equals(idCliente)) {
-                    existe = 1;
-                    if (IDClient.length() > 8) {
-                        System.out.println("\t" + puntos + "\t    " + nombreCliente + " " + apellido);
-                    } else {
-                        System.out.println("\t" + puntos + "\t    " + nombreCliente + " " + apellido);
-                    }
-                }
-            }
-            if (existe == 0) {
-                System.out.println("CLIENTE NO EXISTE");
-            }
-        } catch (HeadlessException | SQLException e) {
-
-        }
-    }
-
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
         System.out.println("\n       VENTAS\n");
@@ -65,7 +24,7 @@ public class InsertSort extends metodosDAO {
 
         if (op == 1) {
             System.out.println(" \n CANTIDAD DE PUNTOS POR CLIENTE\n");
-            
+
             String[] arr = getConsultar("clientes", "puntos");
             String[] id = getConsultar("clientes", "id");
             int puntos[] = new int[arr.length];
@@ -130,6 +89,47 @@ public class InsertSort extends metodosDAO {
             } else {
                 System.out.println("OPCION INVALIDA");
             }
+        }
+    }
+
+    public static void consultar(String nameTablaSQL, String idCliente) {
+
+        ConexionSQL con1 = new ConexionSQL();
+        Connection conet;
+        Statement st;
+        ResultSet rs;
+        String IDClient;
+        String nombreCliente;
+        String apellido;
+        String puntos;
+
+        String sql = "select * from " + nameTablaSQL;
+        int existe = 0;
+
+        try {
+
+            conet = con1.conexion();
+            st = conet.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                IDClient = rs.getString("id");
+                nombreCliente = rs.getString("nombre");
+                apellido = rs.getString("apellido");
+                puntos = rs.getString("puntos");
+                if (IDClient.equals(idCliente)) {
+                    existe = 1;
+                    if (IDClient.length() > 8) {
+                        System.out.println("\t" + puntos + "\t    " + nombreCliente + " " + apellido);
+                    } else {
+                        System.out.println("\t" + puntos + "\t    " + nombreCliente + " " + apellido);
+                    }
+                }
+            }
+            if (existe == 0) {
+                System.out.println("CLIENTE NO EXISTE");
+            }
+        } catch (HeadlessException | SQLException e) {
+
         }
     }
 
