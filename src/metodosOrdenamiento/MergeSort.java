@@ -68,21 +68,6 @@ public class MergeSort extends metodosDAO {
             AgregarCliente(dni, nombre, apellido, placa, marca, "0");
         } else {
             if (op == 2) {
-                /*
-                        ATRIBUTOS UNICOS
-                PARA LOS ATRIBUTOS ÚNICOS USARÉ EL "MergeSort"
-                
-                 - DNI
-                 - PLACA
-                        
-                        ATRIBUTOS REPETIDOS
-                PARA LOS ATRIBUTOS REPETIDOS, LA ÚNICA FORMA DE IDENTIFICARLOS 
-                COMO ÚNICOS ES ATRAVÉZ DE "ID EN LA BD", USARÉ EL "InserSort"
-                
-                 - NOMBRE
-                 - APELLIDO
-                 - MARCA
-                 */
                 System.out.println("\n         CLIENTES\n");
                 System.out.println("Ordenas por: ");
                 System.out.println(" [1] Dni");
@@ -307,5 +292,4 @@ public class MergeSort extends metodosDAO {
             k++;
         }
     }
-
 }
