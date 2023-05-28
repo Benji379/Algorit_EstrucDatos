@@ -165,6 +165,7 @@ public class QuickSort extends metodosDAO {
         }
         // Coloca el pivote en la posición correcta
         swap(arr, i + 1, high);
+
         // Retorna el índice del pivote
         return i + 1;
     }

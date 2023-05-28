@@ -250,7 +250,7 @@ public class MergeSort extends metodosDAO {
         int mid = arr.length / 2;
         String[] left = new String[mid];
         String[] right = new String[arr.length - mid];
-
+        
         System.arraycopy(arr, 0, left, 0, mid);
         System.arraycopy(arr, mid, right, 0, arr.length - mid);
 
