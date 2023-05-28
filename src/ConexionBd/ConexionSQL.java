@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Benji
+ * @author Flypaim Machine
  */
 public class ConexionSQL {
 
