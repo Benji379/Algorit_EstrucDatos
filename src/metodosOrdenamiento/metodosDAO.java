@@ -73,7 +73,7 @@ public class metodosDAO {
                 ArrayRetornado[i] = añadiendo.get(i);
             }
             return ArrayRetornado;
-
+            
         } catch (SQLException e) {
             // Manejo de excepciones
         }

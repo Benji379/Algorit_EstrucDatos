@@ -14,7 +14,7 @@ import java.util.Scanner;
  * @author Flypaim Machine
  */
 public class InsertSort extends metodosDAO {
-
+    
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
         System.out.println("\n       VENTAS\n");
