@@ -7,31 +7,56 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Hashtable; // Importar la clase Hashtable
 import java.util.List;
-import java.util.Stack;
+import java.util.Scanner;
 
 public class Pilas {
 
     public static void main(String[] args) {
-        String nombreTabla = "ventas";
-        System.out.println("\n               VENTAS\n");
-        List<NodoTabla> listaTabla = getTablaBD(nombreTabla);
 
-        if (listaTabla != null && !listaTabla.isEmpty()) {
-            int numeroColumnas = listaTabla.get(0).getCantidadDatos();
-            imprimirEncabezados(listaTabla, numeroColumnas);
-            imprimirDatos(listaTabla, numeroColumnas);
+        System.out.println("\n      VENTAS\n");
+        System.out.println(" [1] Buscar Venta");
+        System.out.println(" [2] Mostrar Ventas");
+        Scanner teclado = new Scanner(System.in);
+        int op = teclado.nextInt();
+        if (op == 1) {
+            String dni;
+            System.out.println("\n     BUSCAR POR DNI\n");
+            System.out.print("Dni: ");
+            dni = teclado.next();
+            List<Hashtable<String, String>> compras = buscarVentasPorDNI(dni); // Utilizar una lista de Hashtable para almacenar las compras
+            if (!compras.isEmpty()) {
+                System.out.println("\nDATOS");
+                imprimirEncabezados();
+                imprimirDatos(compras);
+            } else {
+                System.out.println("No se encontró ninguna compra con el DNI especificado.");
+            }
         } else {
-            System.out.println("No se pudo obtener la tabla.");
+            if (op == 2) {
+                String nombreTabla = "ventas";
+                System.out.println("\n               VENTAS\n");
+                List<Hashtable<String, String>> listaTabla = getTablaBD(nombreTabla); // Utilizar una lista de Hashtable para almacenar la tabla
+
+                if (!listaTabla.isEmpty()) {
+                    imprimirEncabezados();
+                    imprimirDatos(listaTabla);
+                } else {
+                    System.out.println("No se pudo obtener la tabla.");
+                }
+            } else {
+                System.out.println("Opción incorrecta");
+            }
         }
     }
 
-    public static List<NodoTabla> getTablaBD(String nombreTabla) {
+    public static List<Hashtable<String, String>> getTablaBD(String nombreTabla) {
         ConexionSQL con1 = new ConexionSQL();
         Connection conet;
         Statement st;
         ResultSet rs;
-        List<NodoTabla> listaTabla = new ArrayList<>();
+        List<Hashtable<String, String>> listaTabla = new ArrayList<>(); // Utilizar una lista de Hashtable para almacenar la tabla
 
         try {
             conet = con1.conexion();
@@ -41,15 +66,14 @@ public class Pilas {
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
 
-            for (int i = 1; i <= columnCount; i++) {
-                NodoTabla nodo = new NodoTabla(metaData.getColumnName(i));
-
-                while (rs.next()) {
-                    nodo.agregarDato(rs.getString(i));
+            while (rs.next()) {
+                Hashtable<String, String> fila = new Hashtable<>(); // Utilizar Hashtable para representar una fila de datos
+                for (int i = 1; i <= columnCount; i++) {
+                    String encabezado = metaData.getColumnName(i);
+                    String dato = rs.getString(i);
+                    fila.put(encabezado, dato); // Agregar la columna y dato a la tabla hash (fila)
                 }
-
-                rs.beforeFirst();
-                listaTabla.add(nodo);
+                listaTabla.add(fila); // Agregar la tabla hash (fila) a la lista
             }
 
             rs.close();
@@ -62,55 +86,50 @@ public class Pilas {
         return listaTabla;
     }
 
-    public static class NodoTabla {
+    public static List<Hashtable<String, String>> buscarVentasPorDNI(String dni) {
+        List<Hashtable<String, String>> compras = new ArrayList<>(); // Utilizar una lista de Hashtable para almacenar las compras
+        String nombreTabla = "ventas";
+        ConexionSQL con1 = new ConexionSQL();
+        Connection conet;
+        Statement st;
+        ResultSet rs;
 
-        private final String encabezado;
-        private final Stack<String> datos;
+        try {
+            conet = con1.conexion();
+            st = conet.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            String consulta = "SELECT * FROM " + nombreTabla + " WHERE dni = '" + dni + "'";
+            rs = st.executeQuery(consulta);
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
 
-        public NodoTabla(String encabezado) {
-            this.encabezado = encabezado;
-            this.datos = new Stack<>();
-        }
-        
-        public String getEncabezado() {
-            return encabezado;
-        }
-
-        public void agregarDato(String dato) {
-            datos.push(dato);
-        }
-
-        public int getCantidadDatos() {
-            return datos.size();
-        }
-
-        public String getDato(int indice) {
-            return datos.get(indice);
-        }
-    }
-
-    public static void imprimirEncabezados(List<NodoTabla> listaTabla, int numeroColumnas) {
-        listaTabla.forEach((nodo) -> {
-            System.out.print(nodo.getEncabezado() + "\t\t");
-        });
-        System.out.println();
-
-        for (int i = 0; i < numeroColumnas; i++) {
-//            for (NodoTabla nodo : listaTabla) {
-//                System.out.print("----------\t");
-//            }
-            System.out.println();
-        }
-    }
-
-    public static void imprimirDatos(List<NodoTabla> listaTabla, int numeroColumnas) {
-        int numeroFilas = listaTabla.get(0).getCantidadDatos();
-
-        for (int fila = 0; fila < numeroFilas; fila++) {
-            for (NodoTabla nodo : listaTabla) {
-                System.out.print(nodo.getDato(fila) + "\t\t");
+            while (rs.next()) {
+                Hashtable<String, String> compra = new Hashtable<>(); // Utilizar Hashtable para representar una compra
+                for (int i = 1; i <= columnCount; i++) {
+                    String encabezado = metaData.getColumnName(i);
+                    String dato = rs.getString(i);
+                    compra.put(encabezado, dato); // Agregar la columna y dato a la tabla hash (compra)
+                }
+                compras.add(compra); // Agregar la tabla hash (compra) a la lista
             }
-            System.out.println();
+
+            rs.close();
+            st.close();
+            conet.close();
+        } catch (SQLException e) {
+            System.out.println("ERROR: " + e.getMessage());
         }
+
+        return compras;
+    }
+
+    public static void imprimirEncabezados() {
+        System.out.println("id\t\tdni\t\t\ttotal\t\tplaca\t\tfecha");
+    }
+
+    public static void imprimirDatos(List<Hashtable<String, String>> listaTabla) {
+        listaTabla.forEach((fila) -> {
+            System.out.println(fila.get("id") + "\t\t" + fila.get("dni") + "\t\t" + fila.get("total") + "\t\t"
+                    + fila.get("placa") + "\t\t" + fila.get("fecha"));
+        });
     }
 }
