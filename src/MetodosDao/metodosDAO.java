@@ -1,4 +1,4 @@
-package metodosOrdenamiento;
+package MetodosDao;
 
 import ConexionBd.ConexionSQL;
 import java.awt.HeadlessException;
@@ -8,6 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Stack;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -73,7 +77,7 @@ public class metodosDAO {
                 ArrayRetornado[i] = añadiendo.get(i);
             }
             return ArrayRetornado;
-            
+
         } catch (SQLException e) {
             // Manejo de excepciones
         }
@@ -148,6 +152,7 @@ public class metodosDAO {
         String id = idRetornado;
         return id;
     }
+
     public static void bubbleSort(String[] arr) {
         int n = arr.length;
         boolean swapped;
@@ -159,6 +164,7 @@ public class metodosDAO {
                     String aux = arr[j];
                     arr[j] = arr[j + 1];
                     arr[j + 1] = aux;
+
                     swapped = true;
                 }
             }
@@ -257,4 +263,37 @@ public class metodosDAO {
 
         }
     }
+
+    public static void AgregarVenta(String dni, String total, String placa, String fecha) {
+        ConexionSQL cc = new ConexionSQL();
+        Connection con = cc.conexion();
+        String SQL = "insert into ventas (dni,total,placa,fecha) values(?,?,?,?)";
+        try {
+            PreparedStatement pst = con.prepareStatement(SQL);
+            pst.setString(1, dni);
+            pst.setString(2, total);
+            pst.setString(3, placa);
+            pst.setString(4, fecha);
+            pst.executeUpdate();
+        } catch (HeadlessException | SQLException e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
+    }
+
+    public static String obtenerFechaHoraActual() {
+        // Obtener la fecha y hora actual
+        LocalDateTime fechaHoraActual = LocalDateTime.now();
+
+        // Definir el formato de fecha y hora deseado
+        DateTimeFormatter formatoFechaHora = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+        // Formatear la fecha y hora actual según el formato deseado
+        String fechaHoraFormateada = fechaHoraActual.format(formatoFechaHora);
+
+        // Retornar la fecha y hora formateada
+        return fechaHoraFormateada;
+    }
+
+   
+
 }

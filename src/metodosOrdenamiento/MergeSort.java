@@ -1,5 +1,6 @@
 package metodosOrdenamiento;
 
+import MetodosDao.metodosDAO;
 import ConexionBd.ConexionSQL;
 import java.awt.HeadlessException;
 import java.sql.Connection;

@@ -1,6 +1,8 @@
 package metodosOrdenamiento;
 
+import MetodosDao.metodosDAO;
 import ConexionBd.ConexionSQL;
+import static MetodosDao.metodosDAO.getConsultar;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +16,7 @@ import java.util.Scanner;
  * @author Flypaim Machine
  */
 public class InsertSort extends metodosDAO {
-    
+
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
         System.out.println("\n       VENTAS\n");
@@ -81,15 +83,31 @@ public class InsertSort extends metodosDAO {
                 System.out.println("Puntos " + puntos);
                 //ME RETORNA LOS PUNTOS ACTUALES DEL CLIENTE EN LA BASE DE DATOS
                 int puntosClienteBD = Integer.parseInt(getID("clientes", DNI, "dni", "puntos"));
-                //AGREGO AL CLIENTE Y SUS PUNTOS A LA BD
-//                AgregarCliente(DNI, puntos);
+                System.out.println("\n\tPLACAS\n");
+                String listPlacas[] = getConsultar("clientes", "placa");
+                MergeSort.mergeSort(listPlacas);
+                String placa = ElegirPlaca(listPlacas);
+                //                AgregarCliente(DNI, puntos);
                 String newPuntos = String.valueOf(puntosClienteBD + puntos);
                 AumentarPuntosCliente(DNI, newPuntos);
 //                System.out.println("Tiene " + puntos + " puntos");
+                metodosDAO.AgregarVenta(DNI, String.valueOf(acum), placa, metodosDAO.obtenerFechaHoraActual());
             } else {
                 System.out.println("OPCION INVALIDA");
             }
         }
+    }
+
+    public static String ElegirPlaca(String[] arrayPlacas) {
+        Scanner teclado = new Scanner(System.in);
+        for (int i = 0; i < arrayPlacas.length; i++) {
+            System.out.println("[" + (i + 1) + "]   " + arrayPlacas[i]);
+        }
+        System.out.println("Ingrese el # de fila correspondiente a la placa");
+        System.out.print(" # de Fila: ");
+        int nFilaMarc = teclado.nextInt();
+        String placaElegida = arrayPlacas[nFilaMarc - 1];
+        return placaElegida;
     }
 
     public static void consultar(String nameTablaSQL, String idCliente) {

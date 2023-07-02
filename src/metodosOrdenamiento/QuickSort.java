@@ -1,5 +1,6 @@
 package metodosOrdenamiento;
 
+import MetodosDao.metodosDAO;
 import ConexionBd.ConexionSQL;
 import java.awt.HeadlessException;
 import java.sql.Connection;
@@ -105,7 +106,7 @@ public class QuickSort extends metodosDAO {
         ConexionSQL cc = new ConexionSQL();
         Connection con = cc.conexion();
         String SQL = "insert into productos (nomProducto,cantidad,costo) values(?,?,?)";
-
+        
         try {
             PreparedStatement pst = con.prepareStatement(SQL);
             pst.setString(1, nombreProducto);
