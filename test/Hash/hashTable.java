@@ -1,4 +1,4 @@
-package Nodos_Pilas_HashTable;
+package Hash;
 
 import ConexionBd.ConexionSQL;
 import java.sql.Connection;
@@ -7,7 +7,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap; // Importar la clase HashMap
+import java.util.Hashtable; // Importar la clase Hashtable
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,7 +15,15 @@ import java.util.Scanner;
  *
  * @author Flypaim Machine
  */
-public class Pilas {
+
+/*
+        La advertencia "Configure Obsolete Collection Hint" 
+        se refiere a que estás utilizando una clase obsoleta 
+        o en desuso para implementar tu colección. En este caso,
+        estás utilizando la clase Hashtable, que se considera obsoleta 
+        en favor de la clase más moderna HashMap en Java.
+ */
+public class hashTable {
 
     public static void main(String[] args) {
 
@@ -29,7 +37,7 @@ public class Pilas {
             System.out.println("\n     BUSCAR POR DNI\n");
             System.out.print("Dni: ");
             dni = teclado.next();
-            List<HashMap<String, String>> compras = buscarVentasPorDNI(dni); // Utilizar una lista de HashMap para almacenar las compras
+            List<Hashtable<String, String>> compras = buscarVentasPorDNI(dni); // Utilizar una lista de Hashtable para almacenar las compras
             if (!compras.isEmpty()) {
                 System.out.println("\nDATOS");
                 imprimirEncabezados();
@@ -41,7 +49,7 @@ public class Pilas {
             if (op == 2) {
                 String nombreTabla = "ventas";
                 System.out.println("\n               VENTAS\n");
-                List<HashMap<String, String>> listaTabla = getTablaBD(nombreTabla); // Utilizar una lista de HashMap para almacenar la tabla
+                List<Hashtable<String, String>> listaTabla = getTablaBD(nombreTabla); // Utilizar una lista de Hashtable para almacenar la tabla
 
                 if (!listaTabla.isEmpty()) {
                     imprimirEncabezados();
@@ -55,12 +63,12 @@ public class Pilas {
         }
     }
 
-    public static List<HashMap<String, String>> getTablaBD(String nombreTabla) {
+    public static List<Hashtable<String, String>> getTablaBD(String nombreTabla) {
         ConexionSQL con1 = new ConexionSQL();
         Connection conet;
         Statement st;
         ResultSet rs;
-        List<HashMap<String, String>> listaTabla = new ArrayList<>(); // Utilizar una lista de HashMap para almacenar la tabla
+        List<Hashtable<String, String>> listaTabla = new ArrayList<>(); // Utilizar una lista de Hashtable para almacenar la tabla
 
         try {
             conet = con1.conexion();
@@ -71,13 +79,13 @@ public class Pilas {
             int columnCount = metaData.getColumnCount();
 
             while (rs.next()) {
-                HashMap<String, String> fila = new HashMap<>(); // Utilizar HashMap para representar una fila de datos
+                Hashtable<String, String> fila = new Hashtable<>(); // Utilizar Hashtable para representar una fila de datos
                 for (int i = 1; i <= columnCount; i++) {
                     String encabezado = metaData.getColumnName(i);
                     String dato = rs.getString(i);
-                    fila.put(encabezado, dato); // Agregar la columna y dato al HashMap (fila)
+                    fila.put(encabezado, dato); // Agregar la columna y dato a la tabla hash (fila)
                 }
-                listaTabla.add(fila); // Agregar el HashMap (fila) a la lista
+                listaTabla.add(fila); // Agregar la tabla hash (fila) a la lista
             }
 
             rs.close();
@@ -90,8 +98,8 @@ public class Pilas {
         return listaTabla;
     }
 
-    public static List<HashMap<String, String>> buscarVentasPorDNI(String dni) {
-        List<HashMap<String, String>> compras = new ArrayList<>(); // Utilizar una lista de HashMap para almacenar las compras
+    public static List<Hashtable<String, String>> buscarVentasPorDNI(String dni) {
+        List<Hashtable<String, String>> compras = new ArrayList<>(); // Utilizar una lista de Hashtable para almacenar las compras
         String nombreTabla = "ventas";
         ConexionSQL con1 = new ConexionSQL();
         Connection conet;
@@ -107,13 +115,13 @@ public class Pilas {
             int columnCount = metaData.getColumnCount();
 
             while (rs.next()) {
-                HashMap<String, String> compra = new HashMap<>(); // Utilizar HashMap para representar una compra
+                Hashtable<String, String> compra = new Hashtable<>(); // Utilizar Hashtable para representar una compra
                 for (int i = 1; i <= columnCount; i++) {
                     String encabezado = metaData.getColumnName(i);
                     String dato = rs.getString(i);
-                    compra.put(encabezado, dato); // Agregar la columna y dato al HashMap (compra)
+                    compra.put(encabezado, dato); // Agregar la columna y dato a la tabla hash (compra)
                 }
-                compras.add(compra); // Agregar el HashMap (compra) a la lista
+                compras.add(compra); // Agregar la tabla hash (compra) a la lista
             }
 
             rs.close();
@@ -130,7 +138,7 @@ public class Pilas {
         System.out.println("id\t\tdni\t\t\ttotal\t\tplaca\t\tfecha");
     }
 
-    public static void imprimirDatos(List<HashMap<String, String>> listaTabla) {
+    public static void imprimirDatos(List<Hashtable<String, String>> listaTabla) {
         listaTabla.forEach((fila) -> {
             System.out.println(fila.get("id") + "\t\t" + fila.get("dni") + "\t\t" + fila.get("total") + "\t\t"
                     + fila.get("placa") + "\t\t" + fila.get("fecha"));
