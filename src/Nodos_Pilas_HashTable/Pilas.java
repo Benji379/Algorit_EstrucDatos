@@ -1,4 +1,4 @@
-package Nodos_Pilas;
+package Nodos_Pilas_HashTable;
 
 import ConexionBd.ConexionSQL;
 import java.sql.Connection;
@@ -57,7 +57,7 @@ public class Pilas {
         Statement st;
         ResultSet rs;
         List<Hashtable<String, String>> listaTabla = new ArrayList<>(); // Utilizar una lista de Hashtable para almacenar la tabla
-
+        
         try {
             conet = con1.conexion();
             st = conet.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);

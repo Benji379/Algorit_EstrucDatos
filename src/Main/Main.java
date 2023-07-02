@@ -1,6 +1,6 @@
 package Main;
 
-import Nodos_Pilas.Pilas;
+import Nodos_Pilas_HashTable.Pilas;
 import java.util.Scanner;
 import metodosOrdenamiento.BubbleSort;
 import metodosOrdenamiento.InsertSort;
@@ -22,7 +22,7 @@ public class Main {
         System.out.println(" [2] QuickSort");
         System.out.println(" [3] InsertSort");
         System.out.println(" [4] MergeSort");
-        System.out.println(" [5] Nodos & Pilas");
+        System.out.println(" [5] Nodos, Pilas & HashTable");
         System.out.println(pts);
         int op = teclado.nextInt();
         System.out.println(pts);
