@@ -1,11 +1,12 @@
 package Main;
 
-import Nodos_Pilas_HashTable.Pilas;
+import ArbolBinario.RQMS_GestionCliente;
+import Nodos_Pilas_HashTable.RQMS_RegistroVentas;
 import java.util.Scanner;
-import metodosOrdenamiento.BubbleSort;
+import metodosOrdenamiento.RQMS_RegistroDatos;
 import metodosOrdenamiento.InsertSort;
 import metodosOrdenamiento.MergeSort;
-import metodosOrdenamiento.QuickSort;
+import metodosOrdenamiento.RQMS_RegistroInventario;
 
 /**
  *
@@ -18,21 +19,22 @@ public class Main {
         String pts = "..................................";
         System.out.println(pts);
         System.out.println("\n    BIENVENIDO AL SISTEMA\n");
-        System.out.println(" [1] BubbleSort");
-        System.out.println(" [2] QuickSort");
-        System.out.println(" [3] InsertSort");
+        System.out.println(" [1] Registro Datos");//BubbleSort
+        System.out.println(" [2] Registro de Inventario");//QuickSort
+        System.out.println(" [3] InsertSort");//InsertSort
         System.out.println(" [4] MergeSort");
-        System.out.println(" [5] Nodos, Pilas & HashTable");
+        System.out.println(" [5] Registro Ventas");//HashMap
+        System.out.println(" [6] Gestion Cliente");//Arbol Binario
         System.out.println(pts);
         int op = teclado.nextInt();
         System.out.println(pts);
 
         switch (op) {
             case 1:
-                BubbleSort.main(new String[]{});
+                RQMS_RegistroDatos.main(new String[]{});
                 break;
             case 2:
-                QuickSort.main(new String[]{});
+                RQMS_RegistroInventario.main(new String[]{});
                 break;
             case 3:
                 InsertSort.main(new String[]{});
@@ -41,7 +43,10 @@ public class Main {
                 MergeSort.main(new String[]{});
                 break;
             case 5:
-                Pilas.main(new String[]{});
+                RQMS_RegistroVentas.main(new String[]{});
+                break;
+            case 6:
+                RQMS_GestionCliente.main(new String[]{});
                 break;
             default:
                 System.out.println("OPCIONES NO VALIDA");

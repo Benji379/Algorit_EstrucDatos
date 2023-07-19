@@ -15,7 +15,7 @@ import java.util.Scanner;
  *
  * @author Flypaim Machine
  */
-public class Pilas {
+public class RQMS_RegistroVentas {
 
     public static void main(String[] args) {
 

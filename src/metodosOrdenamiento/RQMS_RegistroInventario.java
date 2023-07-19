@@ -14,7 +14,7 @@ import java.util.Scanner;
  *
  * @author Flypaim Machine
  */
-public class QuickSort extends metodosDAO {
+public class RQMS_RegistroInventario extends metodosDAO {
 
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);

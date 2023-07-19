@@ -292,6 +292,4 @@ public class metodosDAO {
         return fechaHoraFormateada;
     }
 
-   
-
 }

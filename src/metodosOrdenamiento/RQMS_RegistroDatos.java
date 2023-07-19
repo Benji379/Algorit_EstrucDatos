@@ -7,11 +7,11 @@ import java.util.Scanner;
  *
  * @author Flypaim Machine
  */
-public class BubbleSort extends metodosDAO {
+public class RQMS_RegistroDatos extends metodosDAO {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        BubbleSort p = new BubbleSort();
+        RQMS_RegistroDatos p = new RQMS_RegistroDatos();
         System.out.println(" [1] Ingresar datos");
         System.out.println(" [2] Mostrar datos");
         int op = scanner.nextInt();
